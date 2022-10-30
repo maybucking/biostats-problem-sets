@@ -1,0 +1,63 @@
+---
+title: "Problem_set_2"
+author: "May"
+date: "10/30/2022"
+output: html_document
+---
+
+#This is problem set 2!
+
+First, lets clear R's brain, and add some packages
+```{r}
+rm(list=ls())
+library(dplyr)
+library(here)
+library(ggplot2)
+library(tidyr) #adding this to help me remove nas
+```
+
+Now, lets bring in the Halloween_data_PS2.csv
+We'll call it Halloween
+```{r}
+Halloween <- read.csv(here("Data", "Halloween_data_PS2.csv") , stringsAsFactors = TRUE) # make the variables factors
+View(Halloween) #to view the dataset
+```
+
+Now lets look at the names of the variables
+```{r}
+names(Halloween)
+```
+Now lets show the data with all rows minus "age"
+```{r}
+select(Halloween, -age)
+```
+
+Now lets look for unique data in the set
+```{r}
+unique(Halloween)
+```
+
+```{r}
+Halloween$Costume <- tolower(Halloween$Costume) #this makes all values in collumn all lowercase
+Halloween$Type <- tolower(Halloween$Type)
+Halloween$Costume <- trimws(Halloween$Costume)# this trims space before or after values
+Halloween$Type <- trimws(Halloween$Type)
+Halloween %>% drop_na(candy_pieces)
+Halloween %>% drop_na(age)
+
+glimpse(Halloween)
+```
+
+```{r}
+totals <- Halloween %>%
+group_by(Costume, Type) %>%
+summarise(totals.mean_candy = mean(candy_pieces), totals.mean_age = mean(age))
+View(totals)
+  
+```
+
+
+
+
+
+
