@@ -38,12 +38,11 @@ unique(Halloween)
 ```
 
 ```{r}
-Halloween$Costume <- tolower(Halloween$Costume) #this makes all values in collumn all lowercase
+Halloween$Costume <- tolower(Halloween$Costume) #this makes all values in column all lowercase
 Halloween$Type <- tolower(Halloween$Type)
 Halloween$Costume <- trimws(Halloween$Costume)# this trims space before or after values
 Halloween$Type <- trimws(Halloween$Type)
-Halloween %>% drop_na(candy_pieces)
-Halloween %>% drop_na(age)
+Halloween <- slice(Halloween , -c(4, 12, 29, 30)) #to slice out all rows with NA's
 
 glimpse(Halloween)
 ```
@@ -51,13 +50,33 @@ glimpse(Halloween)
 ```{r}
 totals <- Halloween %>%
 group_by(Costume, Type) %>%
-summarise(totals.mean_candy = mean(candy_pieces), totals.mean_age = mean(age))
+summarise(totals.mean_candy = mean(candy_pieces), totals.mean_age = mean(age)) #finding mean of both variables within the group
 View(totals)
   
 ```
 
 
 
+Now lets make a scatterplot of the number of pieces of candy taken from children 10 and under
+```{r}
+ggplot(totals, aes(x = totals.mean_age, y = totals.mean_candy, colour = Type)) + geom_point(size =2)+
+xlab("Mean age of kids (years)") +
+ylab("Mean number pieces taken")
+```
 
+Now lets create a histogram for children in not scary costumes under the age of ten
+```{r}
+Children <-filter(Halloween, Type == "not scary" | age <= 10) #specifies children Type not scary and age less than or equal to 10 
+ggplot(Children, aes(x = age)) + geom_histogram(bins = 4)+
+xlab("Age of Child")+
+ylab("Number")
+```
 
+Now let's create a box plot
+```{r}
+ggplot(Halloween, aes(x = age, y = Costume)) + geom_boxplot() + facet_wrap(~Type)+
+xlab("Child age (years)")+
+  ylab("Costume choice")
+```
 
+Save and commit
