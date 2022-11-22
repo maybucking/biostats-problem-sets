@@ -36,6 +36,8 @@ Now lets look for unique data in the set
 ```{r}
 unique(Halloween)
 ```
+I'm not sure what these last several lines of code have done for you. In terms of becoming familiar with the data, they are ok, but they haven't shown you any potential issues within each variable, such as incorrectly formatted text within a column.
+
 
 ```{r}
 Halloween$Costume <- tolower(Halloween$Costume) #this makes all values in column all lowercase
@@ -46,6 +48,9 @@ Halloween <- slice(Halloween , -c(4, 12, 29, 30)) #to slice out all rows with NA
 
 glimpse(Halloween)
 ```
+
+I don't agree with your choice to simply delete rows because they have NAS - doing so is throwing away data. You can deal with the NA's individually and keep some of the data. See the key for details.
+
 
 ```{r}
 totals <- Halloween %>%
